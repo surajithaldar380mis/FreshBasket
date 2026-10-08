@@ -1,1 +1,4 @@
+User-agent: *
+Allow: /
 
+Sitemap: https://surajithaldar380mis.github.io/FreshBasket/sitemap.xml
