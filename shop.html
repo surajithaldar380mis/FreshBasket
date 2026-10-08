@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>FreshBasket - Shop Panel</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+body{
+font-family:Inter,sans-serif;
+background:#f6f8f7;
+}
+.card{
+background:white;
+border:1px solid #e5e7eb;
+border-radius:18px;
+}
+input,select{
+outline:none;
+}
+input:focus,select:focus{
+border-color:#16a34a;
+box-shadow:0 0 0 3px #dcfce7;
+}
+.btn{
+padding:11px 16px;
+border-radius:12px;
+font-weight:700;
+cursor:pointer;
+}
+.green{
+background:#16a34a;
+color:white;
+}
+.red{
+background:#fee2e2;
+color:#dc2626;
+}
+</style>
+</head>
+
+<body>
+
+<header class="bg-white border-b">
+<div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+
+<div>
+<div class="text-2xl font-extrabold text-green-600">
+FreshBasket
+</div>
+<div class="text-xs text-gray-500">
+Shop Panel
+</div>
+</div>
+
+<button onclick="logout()" class="btn red">
+Logout
+</button>
+
+</div>
+</header>
+
+<main class="max-w-7xl mx-auto px-4 py-6">
+
+<div id="loginBox" class="max-w-md mx-auto card p-6 mt-10">
+
+<h1 class="text-2xl font-extrabold mb-2">
+Shop Login
+</h1>
+
+<p class="text-gray-500 mb-5">
+Login to manage your shop.
+</p>
+
+<input id="shopId"
+class="w-full border rounded-xl px-4 py-3 mb-3"
+placeholder="Shop ID">
+
+<input id="shopPassword"
+type="password"
+class="w-full border rounded-xl px-4 py-3 mb-4"
+placeholder="Password">
+
+<button onclick="login()" class="btn green w-full">
+Login
+</button>
+
+<div class="bg-green-50 rounded-xl p-3 mt-4 text-sm">
+Demo:<br>
+SHOP001 / shop123
+</div>
+
+</div>
+
+<div id="dashboard" class="hidden">
+
+<div class="mb-6">
+<h1 id="shopName" class="text-3xl font-extrabold"></h1>
+<p id="shopLocation" class="text-gray-500"></p>
+</div>
+
+<div class="grid md:grid-cols-4 gap-4 mb-6">
+
+<div class="card p-5">
+<div class="text-gray-500">Products</div>
+<div id="productCount" class="text-3xl font-extrabold mt-2">0</div>
+</div>
+
+<div class="card p-5">
+<div class="text-gray-500">Orders</div>
+<div id="orderCount" class="text-3xl font-extrabold mt-2">0</div>
+</div>
+
+<div class="card p-5">
+<div class="text-gray-500">Sales</div>
+<div id="sales" class="text-3xl font-extrabold mt-2">₹0</div>
+</div>
+
+<div class="card p-5">
+<div class="text-gray-500">Rating</div>
+<div id="rating" class="text-3xl font-extrabold mt-2">0</div>
+</div>
+
+</div>
+
+<div class="flex flex-wrap gap-3 mb-5">
+
+<button onclick="openProductForm()"
+class="btn green">
++ Add Product
+</button>
+
+<button onclick="showOrders()"
+class="btn bg-white border">
+Shop Orders
+</button>
+
+</div>
+
+<div class="card p-5">
+
+<div class="flex justify-between items-center mb-5">
+<h2 class="text-xl font-extrabold">
+My Products
+</h2>
+
+<input id="productSearch"
+oninput="renderProducts()"
+class="border rounded-xl px-4 py-2"
+placeholder="Search product">
+</div>
+
+<div id="products"></div>
+
+</div>
+
+</div>
+
+</main>
+
+<!-- PRODUCT FORM -->
+<div id="productModal"
+class="hidden fixed inset-0 bg-black/50 z-50 p-4 overflow-y-auto">
+
+<div class="bg-white rounded-2xl max-w-lg mx-auto p-6 mt-8">
+
+<div class="flex justify-between mb-5">
+<h2 id="formTitle" class="text-2xl font-extrabold">
+Add Product
+</h2>
+
+<button onclick="closeProductForm()" class="text-2xl">
+×
+</button>
+</div>
+
+<input type="hidden" id="editId">
+
+<label class="font-semibold">Product Name</label>
+<input id="pName"
+class="w-full border rounded-xl px-4 py-3 mb-3"
+placeholder="Apple">
+
+<label class="font-semibold">Category</label>
+<select id="pCategory"
+class="w-full border rounded-xl px-4 py-3 mb-3">
+<option>Fruits</option>
+<option>Vegetables</option>
+<option>Dairy</option>
+<option>Grocery</option>
+<option>Beverages</option>
+<option>Snacks</option>
+<option>Household</option>
+</select>
+
+<label class="font-semibold">Weight / Variant</label>
+<input id="pWeight"
+class="w-full border rounded-xl px-4 py-3 mb-3"
+placeholder="1 Kg">
+
+<label class="font-semibold">Selling Price</label>
+<input id="pPrice"
+type="number"
+class="w-full border rounded-xl px-4 py-3 mb-3"
+placeholder="100"
+oninput="calculateDiscount()">
+
+<label class="font-semibold">Original Price</label>
+<input id="pOriginal"
+type="number"
+class="w-full border rounded-xl px-4 py-3 mb-3"
+placeholder="120"
+oninput="calculateDiscount()">
+
+<div class="bg-green-50 rounded-xl p-3 mb-3">
+Discount:
+<b id="discount">0%</b>
+</div>
+
+<label class="font-semibold">Stock</label>
+<input id="pStock"
+type="number"
+class="w-full border rounded-xl px-4 py-3 mb-3"
+placeholder="50">
+
+<label class="font-semibold">Product Image URL</label>
+<input id="pImage"
+class="w-full border rounded-xl px-4 py-3 mb-5"
+placeholder="https://...">
+
+<div class="flex gap-2">
+<button onclick="closeProductForm()"
+class="btn bg-gray-100 flex-1">
+Cancel
+</button>
+
+<button onclick="saveProduct()"
+class="btn green flex-1">
+Save Product
+</button>
+</div>
+
+</div>
+</div>
+
+<!-- ORDERS -->
+<div id="ordersModal"
+class="hidden fixed inset-0 bg-black/50 z-50 p-4">
+
+<div class="bg-white rounded-2xl max-w-4xl mx-auto mt-8 p-6 max-h-[90vh] overflow-y-auto">
+
+<div class="flex justify-between mb-5">
+<h2 class="text-2xl font-extrabold">
+Shop Orders
+</h2>
+
+<button onclick="closeOrders()" class="text-2xl">
+×
+</button>
+</div>
+
+<div id="shopOrders"></div>
+
+</div>
+</div>
+
+<script>
+
+const PRODUCTS_KEY="freshBasketProducts";
+const ORDERS_KEY="freshBasketOrders";
+
+const shops=[
+{
+id:"shop1",
+name:"Fresh Mart",
+location:"New Ashok Nagar",
+rating:4.6
+},
+{
+id:"shop2",
+name:"Daily Needs Store",
+location:"Mayur Vihar",
+rating:4.5
+},
+{
+id:"shop3",
+name:"Green Basket",
+location:"Laxmi Nagar",
+rating:4.7
+},
+{
+id:"shop4",
+name:"City Grocery",
+location:"Patparganj",
+rating:4.4
+}
+];
+
+const accounts={
+SHOP001:{
+password:"shop123",
+shopId:"shop1"
+},
+SHOP002:{
+password:"shop123",
+shopId:"shop2"
+},
+SHOP003:{
+password:"shop123",
+shopId:"shop3"
+},
+SHOP004:{
+password:"shop123",
+shopId:"shop4"
+}
+};
+
+let products=
+JSON.parse(localStorage.getItem(PRODUCTS_KEY)) || [];
+
+let currentShop=null;
+
+function login(){
+
+let id=document.getElementById("shopId").value.trim().toUpperCase();
+let password=document.getElementById("shopPassword").value;
+
+let account=accounts[id];
+
+if(!account || account.password!==password){
+alert("Invalid Shop ID or Password.");
+return;
+}
+
+currentShop=shops.find(
+s=>s.id===account.shopId
+);
+
+localStorage.setItem(
+"freshBasketShopLogin",
+JSON.stringify(currentShop)
+);
+
+showDashboard();
+
+}
+
+function showDashboard(){
+
+if(!currentShop)return;
+
+document.getElementById("loginBox")
+.classList.add("hidden");
+
+document.getElementById("dashboard")
+.classList.remove("hidden");
+
+document.getElementById("shopName")
+.innerText=currentShop.name;
+
+document.getElementById("shopLocation")
+.innerText=currentShop.location;
+
+document.getElementById("rating")
+.innerText="⭐ "+currentShop.rating;
+
+renderProducts();
+updateStats();
+
+}
+
+function logout(){
+
+localStorage.removeItem("freshBasketShopLogin");
+location.reload();
+
+}
+
+function renderProducts(){
+
+let search=
+document.getElementById("productSearch")?.value
+.toLowerCase() || "";
+
+let list=products.filter(p=>
+p.shopId===currentShop.id &&
+(
+p.name.toLowerCase().includes(search) ||
+p.category.toLowerCase().includes(search)
+)
+);
+
+document.getElementById("productCount").innerText=list.length;
+
+document.getElementById("products").innerHTML=
+list.length===0
+?
+`<div class="text-center py-10 text-gray-500">
+No products found.
+</div>`
+:
+`
+<div class="overflow-x-auto">
+<table class="w-full text-left">
+<thead>
+<tr class="border-b">
+<th class="p-3">Product</th>
+<th class="p-3">Category</th>
+<th class="p-3">Price</th>
+<th class="p-3">Stock</th>
+<th class="p-3">Action</th>
+</tr>
+</thead>
+<tbody>
+${list.map(p=>`
+
+<tr class="border-b">
+
+<td class="p-3">
+<div class="flex items-center gap-3">
+<img src="${p.image}"
+class="w-12 h-12 rounded-lg object-cover">
+<div>
+<div class="font-bold">${p.name}</div>
+<div class="text-xs text-gray-500">${p.weight}</div>
+</div>
+</div>
+</td>
+
+<td class="p-3">${p.category}</td>
+
+<td class="p-3 font-bold">
+₹${p.price}
+</td>
+
+<td class="p-3">
+<input
+type="number"
+value="${p.stock ?? 50}"
+min="0"
+onchange="updateStock('${p.id}',this.value)"
+class="border rounded-lg px-3 py-2 w-24">
+</td>
+
+<td class="p-3">
+<div class="flex gap-2">
+<button
+onclick="editProduct('${p.id}')"
+class="px-3 py-2 rounded-lg bg-green-100 text-green-700 font-bold">
+Edit
+</button>
+
+<button
+onclick="deleteProduct('${p.id}')"
+class="px-3 py-2 rounded-lg bg-red-100 text-red-700 font-bold">
+Delete
+</button>
+</div>
+</td>
+
+</tr>
+
+`).join("")}
+</tbody>
+</table>
+</div>
+`;
+
+}
+
+function openProductForm(id=null){
+
+document.getElementById("productModal")
+.classList.remove("hidden");
+
+if(id){
+
+let p=products.find(x=>x.id===id);
+
+if(!p)return;
+
+document.getElementById("formTitle").innerText=
+"Edit Product";
+
+document.getElementById("editId").value=p.id;
+document.getElementById("pName").value=p.name;
+document.getElementById("pCategory").value=p.category;
+document.getElementById("pWeight").value=p.weight;
+document.getElementById("pPrice").value=p.price;
+document.getElementById("pOriginal").value=p.originalPrice;
+document.getElementById("pStock").value=p.stock ?? 50;
+document.getElementById("pImage").value=p.image;
+
+calculateDiscount();
+
+}else{
+
+document.getElementById("formTitle").innerText=
+"Add Product";
+
+document.getElementById("editId").value="";
+document.getElementById("pName").value="";
+document.getElementById("pWeight").value="";
+document.getElementById("pPrice").value="";
+document.getElementById("pOriginal").value="";
+document.getElementById("pStock").value="50";
+document.getElementById("pImage").value="";
+document.getElementById("discount").innerText="0%";
+
+}
+
+}
+
+function closeProductForm(){
+document.getElementById("productModal")
+.classList.add("hidden");
+}
+
+function calculateDiscount(){
+
+let price=Number(
+document.getElementById("pPrice").value
+);
+
+let original=Number(
+document.getElementById("pOriginal").value
+);
+
+let discount=0;
+
+if(original>price){
+discount=Math.round(
+((original-price)/original)*100
+);
+}
+
+document.getElementById("discount")
+.innerText=discount+"%";
+
+}
+
+function saveProduct(){
+
+let id=document.getElementById("editId").value;
+
+let name=document.getElementById("pName").value.trim();
+let category=document.getElementById("pCategory").value;
+let weight=document.getElementById("pWeight").value.trim();
+
+let price=Number(
+document.getElementById("pPrice").value
+);
+
+let originalPrice=Number(
+document.getElementById("pOriginal").value
+);
+
+let stock=Number(
+document.getElementById("pStock").value
+);
+
+let image=document.getElementById("pImage").value.trim();
+
+if(name.length<2){
+alert("Enter product name.");
+return;
+}
+
+if(price<=0){
+alert("Enter valid selling price.");
+return;
+}
+
+if(originalPrice<price){
+alert("Original price should be equal to or higher than selling price.");
+return;
+}
+
+if(stock<0){
+alert("Stock cannot be negative.");
+return;
+}
+
+if(!image){
+image="https://images.unsplash.com/photo-1542838132-92c53300491e?w=500";
+}
+
+if(id){
+
+let p=products.find(x=>x.id===id);
+
+if(p){
+
+p.name=name;
+p.category=category;
+p.weight=weight;
+p.price=price;
+p.originalPrice=originalPrice;
+p.stock=stock;
+p.image=image;
+
+}
+
+}else{
+
+products.push({
+
+id:"custom_"+Date.now(),
+
+name:name,
+category:category,
+weight:weight,
+price:price,
+originalPrice:originalPrice,
+stock:stock,
+image:image,
+
+shopId:currentShop.id,
+shopName:currentShop.name
+
+});
+
+}
+
+localStorage.setItem(
+PRODUCTS_KEY,
+JSON.stringify(products)
+);
+
+closeProductForm();
+renderProducts();
+updateStats();
+
+alert("Product saved successfully.");
+
+}
+
+function editProduct(id){
+openProductForm(id);
+}
+
+function deleteProduct(id){
+
+let p=products.find(x=>x.id===id);
+
+if(!p)return;
+
+if(!confirm(
+`Delete ${p.name} from your shop?`
+))return;
+
+products=
+products.filter(x=>x.id!==id);
+
+localStorage.setItem(
+PRODUCTS_KEY,
+JSON.stringify(products)
+);
+
+renderProducts();
+updateStats();
+
+alert("Product deleted.");
+
+}
+
+function updateStock(id,value){
+
+let p=products.find(x=>x.id===id);
+
+if(!p)return;
+
+p.stock=Math.max(0,Number(value));
+
+localStorage.setItem(
+PRODUCTS_KEY,
+JSON.stringify(products)
+);
+
+}
+
+function updateStats(){
+
+let orders=
+JSON.parse(localStorage.getItem(ORDERS_KEY)) || [];
+
+let shopOrders=orders.filter(
+o=>o.shopId===currentShop.id
+);
+
+document.getElementById("orderCount")
+.innerText=shopOrders.length;
+
+let sales=shopOrders.reduce(
+(sum,o)=>sum+Number(o.subtotal||0),
+0
+);
+
+document.getElementById("sales")
+.innerText="₹"+sales;
+
+}
+
+function showOrders(){
+
+let orders=
+JSON.parse(localStorage.getItem(ORDERS_KEY)) || [];
+
+let list=orders.filter(
+o=>o.shopId===currentShop.id
+);
+
+document.getElementById("shopOrders").innerHTML=
+list.length===0
+?
+`<div class="text-center py-10 text-gray-500">
+No orders yet.
+</div>`
+:
+list.map(o=>`
+
+<div class="border rounded-2xl p-5 mb-4">
+
+<div class="flex justify-between">
+<div>
+<div class="font-extrabold">${o.id}</div>
+<div class="text-sm text-gray-500">${o.date}</div>
+</div>
+
+<span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm">
+${o.status}
+</span>
+</div>
+
+<div class="mt-4">
+<b>Customer:</b> ${o.customerName}<br>
+<b>Phone:</b> ${o.customerPhone}<br>
+<b>Address:</b> ${o.address}
+</div>
+
+<div class="mt-4 bg-gray-50 rounded-xl p-3">
+${o.items.map(i=>`
+<div class="flex justify-between py-1">
+<span>${i.name} × ${i.qty}</span>
+<b>₹${i.price*i.qty}</b>
+</div>
+`).join("")}
+</div>
+
+<div class="flex justify-between mt-4 text-xl font-extrabold">
+<span>Order Total</span>
+<span>₹${o.total}</span>
+</div>
+
+<div class="mt-2 text-sm">
+Payment: <b>${o.paymentMethod}</b>
+</div>
+
+</div>
+
+`).join("");
+
+document.getElementById("ordersModal")
+.classList.remove("hidden");
+
+}
+
+function closeOrders(){
+document.getElementById("ordersModal")
+.classList.add("hidden");
+}
+
+let savedShop=
+JSON.parse(
+localStorage.getItem("freshBasketShopLogin")
+);
+
+if(savedShop){
+
+currentShop=savedShop;
+showDashboard();
+
+}
+
+</script>
+
+</body>
+</html>
