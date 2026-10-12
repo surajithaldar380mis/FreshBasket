@@ -3,315 +3,180 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>FreshBasket Shop Panel | Shop Login</title>
-<meta name="description" content="FreshBasket shop panel for managing grocery products, prices and stock.">
+<title>FreshBasket Shop Panel</title>
 <meta name="robots" content="noindex, follow">
-<meta name="author" content="FreshBasket">
 <meta name="theme-color" content="#16a34a">
 
-<script src="https://cdn.tailwindcss.com"></script>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-
 <style>
-* { box-sizing: border-box; }
-body {
-    margin: 0;
-    font-family: Inter, Arial, sans-serif;
-    background: #f3f7f3;
-    color: #17251b;
-}
-button, input, select { font: inherit; }
-button { cursor: pointer; }
-.hidden { display: none !important; }
-.header {
-    background: #15803d;
-    color: white;
-    padding: 18px 5%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 15px;
-    flex-wrap: wrap;
-}
-.logo { font-size: 25px; font-weight: 800; }
-.logo span { color: #dcfce7; }
-.container { width: min(1150px, 94%); margin: 25px auto; }
-.card {
-    background: white;
-    border-radius: 14px;
-    padding: 22px;
-    box-shadow: 0 3px 15px #0000000a;
-    margin-bottom: 20px;
-}
-h1 { font-size: 27px; margin: 0 0 8px; }
-h2 { font-size: 20px; margin: 0 0 17px; }
-.muted { color: #647067; font-size: 14px; line-height: 1.6; }
-label { display: block; font-size: 13px; font-weight: 700; margin-bottom: 6px; }
-input, select {
-    width: 100%;
-    padding: 12px;
-    border: 1px solid #d5dfd6;
-    border-radius: 8px;
-    background: white;
-    outline: none;
-}
-input:focus, select:focus { border-color: #16a34a; }
-.form-grid {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 15px;
-}
-.field { min-width: 0; }
-.full { grid-column: 1 / -1; }
-.btn {
-    border: 0;
-    border-radius: 8px;
-    padding: 11px 16px;
-    font-weight: 700;
-}
-.btn-green { background: #15803d; color: white; }
-.btn-green:hover { background: #166534; }
-.btn-light { background: #e8f5eb; color: #166534; }
-.btn-red { background: #fee2e2; color: #b91c1c; }
-.btn-dark { background: #26352a; color: white; }
-.btn:disabled { opacity: .5; cursor: not-allowed; }
-.actions { display: flex; flex-wrap: wrap; gap: 8px; }
-.stats {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 14px;
-    margin-bottom: 20px;
-}
-.stat {
-    background: white;
-    padding: 18px;
-    border-radius: 12px;
-    border: 1px solid #e5eee6;
-}
-.stat strong { display: block; font-size: 25px; color: #15803d; margin-top: 7px; }
-.product-list { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
-.product {
-    background: white;
-    border: 1px solid #e3ebe4;
-    border-radius: 12px;
-    overflow: hidden;
-    min-width: 0;
-}
-.product img {
-    width: 100%;
-    height: 155px;
-    object-fit: cover;
-    background: #f0f4f0;
-}
-.product-body { padding: 14px; }
-.product-name { font-size: 16px; font-weight: 800; overflow-wrap: anywhere; }
-.product-price { color: #15803d; font-size: 20px; font-weight: 800; margin: 8px 0; }
-.product-meta { font-size: 12px; color: #647067; line-height: 1.8; overflow-wrap: anywhere; }
-.product .actions { margin-top: 12px; }
-.product .btn { padding: 9px 11px; font-size: 12px; }
-.toolbar { display: flex; gap: 10px; margin-bottom: 18px; }
-.toolbar input { flex: 1; min-width: 0; }
-.toolbar select { width: 190px; }
-.notice {
-    background: #eff6ff;
-    color: #1e40af;
-    padding: 12px;
-    border-radius: 8px;
-    font-size: 13px;
-    line-height: 1.6;
-    margin: 15px 0;
-}
-.empty { padding: 30px 10px; text-align: center; color: #647067; }
-#toast {
-    position: fixed;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: #17251b;
-    color: white;
-    padding: 12px 18px;
-    border-radius: 9px;
-    display: none;
-    z-index: 99;
-    max-width: 90%;
-    font-size: 14px;
-}
-footer { text-align: center; color: #647067; font-size: 12px; padding: 25px; }
-
-@media (max-width: 800px) {
-    .product-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-}
-@media (max-width: 520px) {
-    .container { width: 94%; margin: 15px auto; }
-    .card { padding: 16px; }
-    .form-grid { grid-template-columns: 1fr; }
-    .full { grid-column: auto; }
-    .stats { gap: 7px; }
-    .stat { padding: 12px 9px; }
-    .stat strong { font-size: 20px; }
-    .product-list { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 9px; }
-    .product img { height: 115px; }
-    .product-body { padding: 10px; }
-    .product .actions { flex-direction: column; }
-    .product .btn { width: 100%; }
-    .toolbar { flex-direction: column; }
-    .toolbar select { width: 100%; }
-    h1 { font-size: 23px; }
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:#f3f7f3;color:#17251b}
+button,input,select{font:inherit}
+button{cursor:pointer}
+.hidden{display:none!important}
+.header{background:#15803d;color:white;padding:18px 5%;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.logo{font-size:25px;font-weight:800}
+.container{width:min(1150px,94%);margin:24px auto}
+.card{background:white;border-radius:14px;padding:20px;box-shadow:0 3px 15px #0000000a;margin-bottom:20px}
+h1{font-size:26px;margin:0 0 8px}
+h2{font-size:20px;margin:0 0 15px}
+.muted{color:#647067;font-size:13px;line-height:1.6}
+label{display:block;font-size:13px;font-weight:bold;margin-bottom:6px}
+input,select{width:100%;padding:12px;border:1px solid #d5dfd6;border-radius:8px;background:white}
+.form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px}
+.full{grid-column:1/-1}
+.btn{border:0;border-radius:8px;padding:11px 15px;font-weight:bold}
+.green{background:#15803d;color:white}
+.light{background:#e8f5eb;color:#166534}
+.red{background:#fee2e2;color:#b91c1c}
+.actions{display:flex;gap:8px;flex-wrap:wrap}
+.notice{background:#eff6ff;color:#1e40af;padding:12px;border-radius:8px;font-size:13px;line-height:1.6;margin:15px 0}
+.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-bottom:20px}
+.stat{background:white;padding:16px;border-radius:12px;border:1px solid #e5eee6}
+.stat strong{display:block;font-size:24px;color:#15803d;margin-top:6px}
+.toolbar{display:flex;gap:10px;margin-bottom:18px}
+.toolbar input{flex:1;min-width:0}
+.toolbar select{width:190px}
+.product-list{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px}
+.product{background:white;border:1px solid #e3ebe4;border-radius:12px;overflow:hidden;min-width:0}
+.product img{width:100%;height:160px;object-fit:cover;background:#f0f4f0}
+.product-body{padding:13px}
+.product-name{font-weight:800;overflow-wrap:anywhere}
+.product-price{color:#15803d;font-size:20px;font-weight:800;margin:8px 0}
+.product-meta{font-size:12px;color:#647067;line-height:1.8;overflow-wrap:anywhere}
+.product .actions{margin-top:12px}
+.product .btn{font-size:12px;padding:9px 12px}
+.empty{text-align:center;padding:25px;color:#647067}
+#toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#17251b;color:white;padding:12px 18px;border-radius:9px;display:none;z-index:99;max-width:90%}
+footer{text-align:center;color:#647067;font-size:12px;padding:25px}
+#productImagePreview{width:150px;height:120px;object-fit:cover;border-radius:10px;margin-top:10px;border:1px solid #ddd}
+@media(max-width:800px){.product-list{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:520px){
+.container{margin:15px auto}.card{padding:15px}
+.form-grid{grid-template-columns:1fr}.full{grid-column:auto}
+.stats{gap:6px}.stat{padding:10px 7px}.stat strong{font-size:19px}
+.product-list{gap:9px}.product img{height:115px}.product-body{padding:9px}
+.product .actions{flex-direction:column}.product .btn{width:100%}
+.toolbar{flex-direction:column}.toolbar select{width:100%}h1{font-size:23px}
 }
 </style>
 </head>
-
 <body>
 
 <header class="header">
-    <div class="logo">Fresh<span>Basket</span> <span style="font-size:13px">SHOP</span></div>
-    <div class="actions">
-        <a href="./1.%20customer.html" style="color:white;text-decoration:none;padding:10px;font-size:14px">Customer Page ↗</a>
-        <button id="logoutBtn" class="btn btn-light hidden" type="button">Logout</button>
-    </div>
+  <div class="logo">FreshBasket <span style="font-size:13px">SHOP</span></div>
+  <div class="actions">
+    <a href="./1.%20customer.html" style="color:white;text-decoration:none;padding:8px">Customer Page ↗</a>
+    <button id="logoutBtn" class="btn light hidden" type="button">Logout</button>
+  </div>
 </header>
 
 <main class="container">
+  <section id="loginSection" class="card" style="max-width:500px;margin:35px auto">
+    <h1>Shop Login</h1>
+    <p class="muted">Apni shop details enter karein.</p>
+    <div class="notice">Demo login hai. Abhi password-based secure authentication nahi hai.</div>
+    <form id="loginForm" class="form-grid">
+      <div class="full">
+        <label for="shopNameInput">Shop Name *</label>
+        <input id="shopNameInput" maxlength="80" required placeholder="Example: Fresh Mart">
+      </div>
+      <div class="full">
+        <label for="shopIdInput">Shop ID *</label>
+        <input id="shopIdInput" maxlength="50" required placeholder="Example: SHOP001">
+      </div>
+      <div class="full">
+        <button class="btn green" style="width:100%" type="submit">Open Shop Dashboard</button>
+      </div>
+    </form>
+  </section>
 
-    <!-- DEMO SHOP LOGIN -->
-    <section id="loginSection" class="card" style="max-width:500px;margin:35px auto">
-        <h1>Shop Login</h1>
-        <p class="muted">Apni shop details enter karke product management panel kholein.</p>
+  <section id="dashboardSection" class="hidden">
+    <div class="card">
+      <h1>Shop Dashboard</h1>
+      <p class="muted">Welcome, <strong id="currentShopName"></strong></p>
+      <p class="muted">Shop ID: <strong id="currentShopId"></strong></p>
+    </div>
 
-        <div class="notice">
-            Demo login: is page par abhi password-based secure authentication nahi hai.
-            Koi bhi shop name enter karne par demo panel khul sakta hai.
-            Isse public website par real shop security na samjhein.
+    <div class="stats">
+      <div class="stat"><span class="muted">My Products</span><strong id="totalProducts">0</strong></div>
+      <div class="stat"><span class="muted">In Stock</span><strong id="inStockProducts">0</strong></div>
+      <div class="stat"><span class="muted">Out of Stock</span><strong id="outStockProducts">0</strong></div>
+    </div>
+
+    <section class="card" id="productFormCard">
+      <h2 id="formTitle">➕ Add New Product</h2>
+      <p class="muted">Price ₹ mein enter karein. Photo computer se select karein.</p>
+
+      <form id="productForm" class="form-grid">
+        <div class="full">
+          <label for="productName">Product Name *</label>
+          <input id="productName" maxlength="100" required placeholder="Fresh Apple">
         </div>
 
-        <form id="loginForm" class="form-grid">
-            <div class="field full">
-                <label for="shopNameInput">Shop Name *</label>
-                <input id="shopNameInput" maxlength="80" required placeholder="Example: Fresh Mart">
-            </div>
-            <div class="field full">
-                <label for="shopIdInput">Shop ID *</label>
-                <input id="shopIdInput" maxlength="50" required placeholder="Example: SHOP001">
-            </div>
-            <div class="full">
-                <button class="btn btn-green" style="width:100%" type="submit">Open Shop Dashboard</button>
-            </div>
-        </form>
+        <div>
+          <label for="productPrice">Price (₹) *</label>
+          <input id="productPrice" type="number" min="0.01" max="1000000" step="0.01" required placeholder="120">
+        </div>
+
+        <div>
+          <label for="productCategory">Category *</label>
+          <select id="productCategory" required>
+            <option>Fruits</option><option>Vegetables</option><option>Dairy</option>
+            <option>Grocery</option><option>Beverages</option><option>Snacks</option>
+            <option>Bakery</option><option>Other</option>
+          </select>
+        </div>
+
+        <div>
+          <label for="productStock">Stock Quantity *</label>
+          <input id="productStock" type="number" min="0" max="1000000" step="1" value="10" required>
+        </div>
+
+        <div>
+          <label for="productUnit">Unit</label>
+          <select id="productUnit">
+            <option value="piece">Piece</option><option value="kg">Kg</option>
+            <option value="500 g">500 g</option><option value="250 g">250 g</option>
+            <option value="litre">Litre</option><option value="500 ml">500 ml</option>
+            <option value="pack">Pack</option><option value="dozen">Dozen</option>
+          </select>
+        </div>
+
+        <div class="full">
+          <label for="productImage">Upload Product Photo</label>
+          <input id="productImage" type="file" accept="image/jpeg,image/png,image/webp">
+          <p class="muted">JPG, PNG ya WEBP. Maximum file size 10 MB.</p>
+          <img id="productImagePreview" class="hidden" alt="Product photo preview">
+        </div>
+
+        <div class="full">
+          <label for="productDescription">Description (optional)</label>
+          <input id="productDescription" maxlength="300" placeholder="Fresh quality product">
+        </div>
+
+        <div class="full actions">
+          <button id="saveProductBtn" class="btn green" type="submit">Save Product</button>
+          <button id="cancelEditBtn" class="btn light hidden" type="button">Cancel Edit</button>
+          <button id="resetFormBtn" class="btn light" type="button">Reset Form</button>
+        </div>
+      </form>
     </section>
 
-    <!-- DASHBOARD -->
-    <section id="dashboardSection" class="hidden">
-        <div class="card">
-            <h1>Shop Dashboard</h1>
-            <p class="muted">Welcome, <strong id="currentShopName"></strong></p>
-            <p class="muted">Shop ID: <strong id="currentShopId"></strong></p>
-        </div>
-
-        <div class="stats">
-            <div class="stat">
-                <span class="muted">My Products</span>
-                <strong id="totalProducts">0</strong>
-            </div>
-            <div class="stat">
-                <span class="muted">In Stock</span>
-                <strong id="inStockProducts">0</strong>
-            </div>
-            <div class="stat">
-                <span class="muted">Out of Stock</span>
-                <strong id="outStockProducts">0</strong>
-            </div>
-        </div>
-
-        <section class="card" id="productFormCard">
-            <h2 id="formTitle">➕ Add New Product</h2>
-            <p class="muted">Product details carefully enter karein. ₹ mein price enter karein.</p>
-
-            <form id="productForm" class="form-grid">
-                <div class="field full">
-                    <label for="productName">Product Name *</label>
-                    <input id="productName" maxlength="100" required placeholder="Example: Fresh Apple">
-                </div>
-
-                <div class="field">
-                    <label for="productPrice">Price (₹) *</label>
-                    <input id="productPrice" type="number" min="0.01" max="1000000" step="0.01" required placeholder="120">
-                </div>
-
-                <div class="field">
-                    <label for="productCategory">Category *</label>
-                    <select id="productCategory" required>
-                        <option value="Fruits">Fruits</option>
-                        <option value="Vegetables">Vegetables</option>
-                        <option value="Dairy">Dairy</option>
-                        <option value="Grocery">Grocery</option>
-                        <option value="Beverages">Beverages</option>
-                        <option value="Snacks">Snacks</option>
-                        <option value="Bakery">Bakery</option>
-                        <option value="Other">Other</option>
-                    </select>
-                </div>
-
-                <div class="field">
-                    <label for="productStock">Stock Quantity *</label>
-                    <input id="productStock" type="number" min="0" max="1000000" step="1" required value="10">
-                </div>
-
-                <div class="field">
-                    <label for="productUnit">Unit</label>
-                    <select id="productUnit">
-                        <option value="piece">Piece</option>
-                        <option value="kg">Kg</option>
-                        <option value="500 g">500 g</option>
-                        <option value="250 g">250 g</option>
-                        <option value="litre">Litre</option>
-                        <option value="500 ml">500 ml</option>
-                        <option value="pack">Pack</option>
-                        <option value="dozen">Dozen</option>
-                    </select>
-                </div>
-
-                <div class="field full">
-                    <label for="productImage">Product Image URL *</label>
-                    <input id="productImage" type="url" maxlength="1000" required placeholder="https://example.com/apple.jpg">
-                    <p class="muted">Image ka direct HTTPS URL use karein.</p>
-                </div>
-
-                <div class="field full">
-                    <label for="productDescription">Description (optional)</label>
-                    <input id="productDescription" maxlength="300" placeholder="Fresh quality product">
-                </div>
-
-                <div class="full actions">
-                    <button id="saveProductBtn" class="btn btn-green" type="submit">Save Product</button>
-                    <button id="cancelEditBtn" class="btn btn-light hidden" type="button">Cancel Edit</button>
-                    <button id="resetFormBtn" class="btn btn-light" type="button">Reset Form</button>
-                </div>
-            </form>
-        </section>
-
-        <section class="card">
-            <h2>📦 My Products</h2>
-            <div class="toolbar">
-                <input id="searchProducts" type="search" placeholder="Search my products...">
-                <select id="filterCategory">
-                    <option value="">All Categories</option>
-                    <option>Fruits</option>
-                    <option>Vegetables</option>
-                    <option>Dairy</option>
-                    <option>Grocery</option>
-                    <option>Beverages</option>
-                    <option>Snacks</option>
-                    <option>Bakery</option>
-                    <option>Other</option>
-                </select>
-            </div>
-            <div id="productList" class="product-list"></div>
-            <div id="emptyProducts" class="empty hidden">Abhi aapne koi product add nahi kiya hai.</div>
-        </section>
+    <section class="card">
+      <h2>📦 My Products</h2>
+      <div class="toolbar">
+        <input id="searchProducts" type="search" placeholder="Search my products...">
+        <select id="filterCategory">
+          <option value="">All Categories</option>
+          <option>Fruits</option><option>Vegetables</option><option>Dairy</option>
+          <option>Grocery</option><option>Beverages</option><option>Snacks</option>
+          <option>Bakery</option><option>Other</option>
+        </select>
+      </div>
+      <div id="productList" class="product-list"></div>
+      <div id="emptyProducts" class="empty hidden">Abhi koi product nahi hai.</div>
     </section>
+  </section>
 </main>
 
 <footer>© 2026 FreshBasket · Shop Management Panel</footer>
@@ -326,391 +191,382 @@ const SESSION_KEY = "freshBasketDemoShop";
 let currentShop = null;
 let editingProductId = null;
 let products = [];
+let selectedImageData = "";
+let existingImageData = "";
 
 const $ = id => document.getElementById(id);
 
 function showToast(message) {
-    const toast = $("toast");
-    toast.textContent = message;
-    toast.style.display = "block";
-    clearTimeout(showToast.timer);
-    showToast.timer = setTimeout(() => {
-        toast.style.display = "none";
-    }, 3000);
+  const toast = $("toast");
+  toast.textContent = message;
+  toast.style.display = "block";
+  clearTimeout(showToast.timer);
+  showToast.timer = setTimeout(() => toast.style.display = "none", 3200);
 }
 
 function createId() {
-    return "fb_" + Date.now() + "_" + Math.random().toString(36).slice(2, 8);
+  return "fb_" + Date.now() + "_" + Math.random().toString(36).slice(2, 8);
 }
 
 function readProducts() {
-    try {
-        const data = JSON.parse(localStorage.getItem(PRODUCTS_KEY) || "[]");
-        if (!Array.isArray(data)) throw new Error("Invalid products data");
-        return data;
-    } catch (error) {
-        showToast("Products data read nahi ho paya. Local data check karein.");
-        return [];
-    }
+  try {
+    const data = JSON.parse(localStorage.getItem(PRODUCTS_KEY) || "[]");
+    if (!Array.isArray(data)) throw new Error("Invalid data");
+    return data;
+  } catch (error) {
+    showToast("Products data read nahi hua. Browser storage check karein.");
+    return [];
+  }
 }
 
 function saveProducts(data) {
-    try {
-        localStorage.setItem(PRODUCTS_KEY, JSON.stringify(data));
-        return true;
-    } catch (error) {
-        showToast("Data save nahi hua. Browser storage check karein.");
-        return false;
-    }
+  try {
+    localStorage.setItem(PRODUCTS_KEY, JSON.stringify(data));
+    return true;
+  } catch (error) {
+    showToast("Storage full ho sakti hai. Photo chhoti karein ya kuch purane products delete karein.");
+    return false;
+  }
 }
 
 function normalizeId(value) {
-    return String(value ?? "").trim().toLowerCase();
+  return String(value ?? "").trim().toLowerCase();
 }
 
 function belongsToCurrentShop(product) {
-    return normalizeId(product.shopId) === normalizeId(currentShop.id);
+  return normalizeId(product.shopId) === normalizeId(currentShop.id);
 }
 
 function startSession(shop) {
-    currentShop = shop;
-    sessionStorage.setItem(SESSION_KEY, JSON.stringify(shop));
-
-    $("loginSection").classList.add("hidden");
-    $("dashboardSection").classList.remove("hidden");
-    $("logoutBtn").classList.remove("hidden");
-
-    $("currentShopName").textContent = shop.name;
-    $("currentShopId").textContent = shop.id;
-
-    renderProducts();
+  currentShop = shop;
+  sessionStorage.setItem(SESSION_KEY, JSON.stringify(shop));
+  $("loginSection").classList.add("hidden");
+  $("dashboardSection").classList.remove("hidden");
+  $("logoutBtn").classList.remove("hidden");
+  $("currentShopName").textContent = shop.name;
+  $("currentShopId").textContent = shop.id;
+  renderProducts();
 }
 
 function endSession() {
-    currentShop = null;
-    sessionStorage.removeItem(SESSION_KEY);
-    editingProductId = null;
-
-    $("loginSection").classList.remove("hidden");
-    $("dashboardSection").classList.add("hidden");
-    $("logoutBtn").classList.add("hidden");
-
-    $("loginForm").reset();
-    resetProductForm(false);
+  currentShop = null;
+  sessionStorage.removeItem(SESSION_KEY);
+  $("loginSection").classList.remove("hidden");
+  $("dashboardSection").classList.add("hidden");
+  $("logoutBtn").classList.add("hidden");
+  $("loginForm").reset();
+  resetProductForm(false);
 }
 
 $("loginForm").addEventListener("submit", event => {
-    event.preventDefault();
-
-    const name = $("shopNameInput").value.trim();
-    const id = $("shopIdInput").value.trim();
-
-    if (!name || !id) {
-        showToast("Shop Name aur Shop ID dono zaroori hain.");
-        return;
-    }
-
-    startSession({ name, id });
-    showToast("Demo Shop Panel open ho gaya.");
+  event.preventDefault();
+  const name = $("shopNameInput").value.trim();
+  const id = $("shopIdInput").value.trim();
+  if (!name || !id) return showToast("Shop Name aur Shop ID enter karein.");
+  startSession({name, id});
+  showToast("Shop Panel open ho gaya.");
 });
 
 $("logoutBtn").addEventListener("click", () => {
-    endSession();
-    showToast("Logout ho gaye.");
+  endSession();
+  showToast("Logout ho gaye.");
+});
+
+function compressProductImage(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onerror = () => reject(new Error("File read failed"));
+    reader.onload = () => {
+      const img = new Image();
+      img.onerror = () => reject(new Error("Image load failed"));
+      img.onload = () => {
+        const maxSide = 900;
+        const scale = Math.min(1, maxSide / Math.max(img.width, img.height));
+        const canvas = document.createElement("canvas");
+        canvas.width = Math.max(1, Math.round(img.width * scale));
+        canvas.height = Math.max(1, Math.round(img.height * scale));
+        const ctx = canvas.getContext("2d");
+        if (!ctx) return reject(new Error("Canvas unavailable"));
+        ctx.fillStyle = "#ffffff";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+        resolve(canvas.toDataURL("image/jpeg", 0.65));
+      };
+      img.src = reader.result;
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+$("productImage").addEventListener("change", async function() {
+  const file = this.files[0];
+  if (!file) {
+    selectedImageData = "";
+    return;
+  }
+
+  if (!["image/jpeg", "image/png", "image/webp"].includes(file.type)) {
+    showToast("Sirf JPG, PNG ya WEBP select karein.");
+    this.value = "";
+    return;
+  }
+
+  if (file.size > 10 * 1024 * 1024) {
+    showToast("Photo 10 MB se chhoti honi chahiye.");
+    this.value = "";
+    return;
+  }
+
+  try {
+    selectedImageData = await compressProductImage(file);
+    const preview = $("productImagePreview");
+    preview.src = selectedImageData;
+    preview.classList.remove("hidden");
+  } catch (error) {
+    showToast("Photo open nahi hui. Doosri photo try karein.");
+    this.value = "";
+    selectedImageData = "";
+  }
 });
 
 function resetProductForm(showMessage = true) {
-    $("productForm").reset();
-    $("productStock").value = 10;
-    $("formTitle").textContent = "➕ Add New Product";
-    $("saveProductBtn").textContent = "Save Product";
-    $("cancelEditBtn").classList.add("hidden");
-    editingProductId = null;
-
-    if (showMessage) showToast("Form reset ho gaya.");
+  $("productForm").reset();
+  $("productStock").value = 10;
+  selectedImageData = "";
+  existingImageData = "";
+  $("productImagePreview").removeAttribute("src");
+  $("productImagePreview").classList.add("hidden");
+  $("formTitle").textContent = "➕ Add New Product";
+  $("saveProductBtn").textContent = "Save Product";
+  $("cancelEditBtn").classList.add("hidden");
+  editingProductId = null;
+  if (showMessage) showToast("Form reset ho gaya.");
 }
 
 $("resetFormBtn").addEventListener("click", () => resetProductForm());
-
 $("cancelEditBtn").addEventListener("click", () => resetProductForm());
 
 $("productForm").addEventListener("submit", event => {
-    event.preventDefault();
-    if (!currentShop) return;
+  event.preventDefault();
+  if (!currentShop) return;
 
-    const name = $("productName").value.trim();
-    const price = Number($("productPrice").value);
-    const category = $("productCategory").value;
-    const stock = Number($("productStock").value);
-    const unit = $("productUnit").value;
-    const image = $("productImage").value.trim();
-    const description = $("productDescription").value.trim();
+  const name = $("productName").value.trim();
+  const price = Number($("productPrice").value);
+  const category = $("productCategory").value;
+  const stock = Number($("productStock").value);
+  const unit = $("productUnit").value;
+  const description = $("productDescription").value.trim();
+  const image = selectedImageData || existingImageData;
 
-    if (!name || !Number.isFinite(price) || price <= 0) {
-        showToast("Valid product name aur price enter karein.");
-        return;
+  if (!name || !Number.isFinite(price) || price <= 0) {
+    return showToast("Valid product name aur price enter karein.");
+  }
+  if (!Number.isInteger(stock) || stock < 0) {
+    return showToast("Stock 0 ya usse bada poora number hona chahiye.");
+  }
+
+  products = readProducts();
+
+  if (editingProductId !== null) {
+    const index = products.findIndex(product =>
+      String(product.id) === String(editingProductId) && belongsToCurrentShop(product)
+    );
+
+    if (index === -1) {
+      showToast("Product nahi mila.");
+      renderProducts();
+      resetProductForm(false);
+      return;
     }
 
-    if (!Number.isInteger(stock) || stock < 0) {
-        showToast("Stock 0 ya usse bada poora number hona chahiye.");
-        return;
-    }
-
-    try {
-        const parsedUrl = new URL(image);
-        if (parsedUrl.protocol !== "https:") {
-            showToast("Image URL HTTPS se shuru hona chahiye.");
-            return;
-        }
-    } catch (error) {
-        showToast("Valid image URL enter karein.");
-        return;
-    }
-
-    products = readProducts();
-
-    if (editingProductId !== null) {
-        const index = products.findIndex(product =>
-            String(product.id) === String(editingProductId) &&
-            belongsToCurrentShop(product)
-        );
-
-        if (index === -1) {
-            showToast("Product nahi mila. List refresh karke dobara try karein.");
-            renderProducts();
-            resetProductForm(false);
-            return;
-        }
-
-        // Existing product fields preserve karein.
-        products[index] = {
-            ...products[index],
-            name,
-            price,
-            category,
-            image,
-            stock,
-            unit,
-            description,
-            shopId: currentShop.id,
-            shopName: currentShop.name
-        };
-
-        if (!saveProducts(products)) return;
-
-        resetProductForm(false);
-        renderProducts();
-        showToast("Product successfully update ho gaya.");
-        return;
-    }
-
-    const newProduct = {
-        id: createId(),
-        name,
-        price,
-        category,
-        image,
-        stock,
-        unit,
-        description,
-        shopId: currentShop.id,
-        shopName: currentShop.name
+    products[index] = {
+      ...products[index],
+      name, price, category, stock, unit, description,
+      shopId: currentShop.id,
+      shopName: currentShop.name
     };
 
-    products.push(newProduct);
+    if (image) products[index].image = image;
 
     if (!saveProducts(products)) return;
-
     resetProductForm(false);
     renderProducts();
-    showToast("Naya product successfully add ho gaya.");
+    showToast("Product update ho gaya.");
+    return;
+  }
+
+  const newProduct = {
+    id: createId(),
+    name, price, category, stock, unit, description,
+    image: image || "",
+    shopId: currentShop.id,
+    shopName: currentShop.name
+  };
+
+  products.push(newProduct);
+  if (!saveProducts(products)) return;
+
+  resetProductForm(false);
+  renderProducts();
+  showToast("Product successfully add ho gaya.");
 });
 
-function escapeHTML(value) {
-    return String(value ?? "").replace(/[&<>"']/g, character => ({
-        "&": "&amp;",
-        "<": "&lt;",
-        ">": "&gt;",
-        '"': "&quot;",
-        "'": "&#39;"
-    })[character]);
-}
-
 function renderProducts() {
-    if (!currentShop) return;
+  if (!currentShop) return;
+  products = readProducts();
 
-    products = readProducts();
+  const mine = products.filter(belongsToCurrentShop);
+  $("totalProducts").textContent = mine.length;
+  $("inStockProducts").textContent = mine.filter(p => Number(p.stock ?? 0) > 0).length;
+  $("outStockProducts").textContent = mine.filter(p => Number(p.stock ?? 0) <= 0).length;
 
-    const myProducts = products.filter(belongsToCurrentShop);
-    const inStock = myProducts.filter(product => Number(product.stock ?? 0) > 0);
-    const outOfStock = myProducts.filter(product => Number(product.stock ?? 0) <= 0);
+  const search = $("searchProducts").value.trim().toLowerCase();
+  const category = $("filterCategory").value;
 
-    $("totalProducts").textContent = myProducts.length;
-    $("inStockProducts").textContent = inStock.length;
-    $("outStockProducts").textContent = outOfStock.length;
+  const filtered = mine.filter(product => {
+    const matchesSearch =
+      String(product.name ?? "").toLowerCase().includes(search) ||
+      String(product.category ?? "").toLowerCase().includes(search);
+    return matchesSearch && (!category || product.category === category);
+  });
 
-    const search = $("searchProducts").value.trim().toLowerCase();
-    const category = $("filterCategory").value;
+  const list = $("productList");
+  list.replaceChildren();
 
-    const filtered = myProducts.filter(product => {
-        const matchesSearch =
-            String(product.name ?? "").toLowerCase().includes(search) ||
-            String(product.category ?? "").toLowerCase().includes(search);
+  $("emptyProducts").classList.toggle("hidden", filtered.length > 0);
+  $("emptyProducts").textContent = mine.length === 0
+    ? "Abhi aapne koi product add nahi kiya hai."
+    : "Is search mein koi product nahi mila.";
 
-        const matchesCategory = !category || product.category === category;
-        return matchesSearch && matchesCategory;
-    });
+  filtered.forEach(product => {
+    const card = document.createElement("article");
+    card.className = "product";
 
-    const list = $("productList");
-    list.innerHTML = "";
+    const image = document.createElement("img");
+    image.alt = product.name || "Product";
+    image.loading = "lazy";
+    image.src = product.image || "https://placehold.co/500x300/e8f5eb/166534?text=FreshBasket";
+    image.onerror = () => {
+      image.onerror = null;
+      image.src = "https://placehold.co/500x300/e8f5eb/166534?text=No+Photo";
+    };
 
-    $("emptyProducts").classList.toggle("hidden", filtered.length > 0);
+    const body = document.createElement("div");
+    body.className = "product-body";
 
-    if (myProducts.length === 0) {
-        $("emptyProducts").textContent = "Abhi aapne koi product add nahi kiya hai.";
-    } else if (filtered.length === 0) {
-        $("emptyProducts").textContent = "Is search mein koi product nahi mila.";
+    const title = document.createElement("div");
+    title.className = "product-name";
+    title.textContent = product.name || "Unnamed Product";
+
+    const price = document.createElement("div");
+    price.className = "product-price";
+    price.textContent = "₹" + Number(product.price || 0).toFixed(2);
+
+    const meta = document.createElement("div");
+    meta.className = "product-meta";
+    meta.textContent = "Category: " + (product.category || "Other") +
+      " · Stock: " + Number(product.stock ?? 0) + " " + (product.unit || "piece") +
+      " · Shop: " + (product.shopName || product.shopId || "Existing shop");
+
+    const actions = document.createElement("div");
+    actions.className = "actions";
+
+    const edit = document.createElement("button");
+    edit.type = "button";
+    edit.className = "btn light";
+    edit.textContent = "Edit";
+    edit.addEventListener("click", () => editProduct(product.id));
+
+    const del = document.createElement("button");
+    del.type = "button";
+    del.className = "btn red";
+    del.textContent = "Delete";
+    del.addEventListener("click", () => deleteProduct(product.id));
+
+    actions.append(edit, del);
+    body.append(title, price, meta);
+
+    if (product.description) {
+      const desc = document.createElement("p");
+      desc.className = "muted";
+      desc.textContent = product.description;
+      body.append(desc);
     }
 
-    filtered.forEach(product => {
-        const card = document.createElement("article");
-        card.className = "product";
-
-        const image = document.createElement("img");
-        image.src = product.image || "";
-        image.alt = product.name || "Product";
-        image.loading = "lazy";
-        image.referrerPolicy = "no-referrer";
-        image.onerror = () => {
-            image.onerror = null;
-            image.src = "https://placehold.co/500x300/e8f5eb/166534?text=FreshBasket";
-        };
-
-        const body = document.createElement("div");
-        body.className = "product-body";
-
-        const title = document.createElement("div");
-        title.className = "product-name";
-        title.textContent = product.name || "Unnamed Product";
-
-        const price = document.createElement("div");
-        price.className = "product-price";
-        price.textContent = "₹" + Number(product.price || 0).toFixed(2);
-
-        const meta = document.createElement("div");
-        meta.className = "product-meta";
-        meta.textContent =
-            "Category: " + (product.category || "Other") +
-            " · Stock: " + Number(product.stock ?? 0) + " " + (product.unit || "piece") +
-            " · Shop: " + (product.shopName || product.shopId || "Existing shop");
-
-        const actions = document.createElement("div");
-        actions.className = "actions";
-
-        const editBtn = document.createElement("button");
-        editBtn.type = "button";
-        editBtn.className = "btn btn-light";
-        editBtn.textContent = "Edit";
-        editBtn.addEventListener("click", () => editProduct(product.id));
-
-        const deleteBtn = document.createElement("button");
-        deleteBtn.type = "button";
-        deleteBtn.className = "btn btn-red";
-        deleteBtn.textContent = "Delete";
-        deleteBtn.addEventListener("click", () => deleteProduct(product.id));
-
-        actions.append(editBtn, deleteBtn);
-        body.append(title, price, meta);
-
-        if (product.description) {
-            const description = document.createElement("p");
-            description.className = "muted";
-            description.textContent = product.description;
-            body.append(description);
-        }
-
-        body.append(actions);
-        card.append(image, body);
-        list.append(card);
-    });
+    body.append(actions);
+    card.append(image, body);
+    list.append(card);
+  });
 }
 
 function editProduct(id) {
-    const product = readProducts().find(item =>
-        String(item.id) === String(id) && belongsToCurrentShop(item)
-    );
+  const product = readProducts().find(item =>
+    String(item.id) === String(id) && belongsToCurrentShop(item)
+  );
+  if (!product) return showToast("Product nahi mila.");
 
-    if (!product) {
-        showToast("Product nahi mila.");
-        return;
-    }
+  editingProductId = product.id;
+  $("productName").value = product.name || "";
+  $("productPrice").value = product.price ?? "";
+  $("productCategory").value = product.category || "Other";
+  $("productStock").value = Number(product.stock ?? 0);
+  $("productUnit").value = product.unit || "piece";
+  $("productDescription").value = product.description || "";
 
-    editingProductId = product.id;
+  selectedImageData = "";
+  existingImageData = product.image || "";
+  $("productImage").value = "";
 
-    $("productName").value = product.name || "";
-    $("productPrice").value = product.price ?? "";
-    $("productCategory").value = product.category || "Other";
-    $("productStock").value = Number(product.stock ?? 0);
-    $("productUnit").value = product.unit || "piece";
-    $("productImage").value = product.image || "";
-    $("productDescription").value = product.description || "";
+  const preview = $("productImagePreview");
+  if (existingImageData) {
+    preview.src = existingImageData;
+    preview.classList.remove("hidden");
+  } else {
+    preview.removeAttribute("src");
+    preview.classList.add("hidden");
+  }
 
-    $("formTitle").textContent = "✏️ Edit Product";
-    $("saveProductBtn").textContent = "Update Product";
-    $("cancelEditBtn").classList.remove("hidden");
-
-    $("productFormCard").scrollIntoView({ behavior: "smooth", block: "start" });
+  $("formTitle").textContent = "✏️ Edit Product";
+  $("saveProductBtn").textContent = "Update Product";
+  $("cancelEditBtn").classList.remove("hidden");
+  $("productFormCard").scrollIntoView({behavior:"smooth", block:"start"});
 }
 
 function deleteProduct(id) {
-    if (!currentShop) return;
+  if (!currentShop) return;
 
-    const latestProducts = readProducts();
-    const product = latestProducts.find(item =>
-        String(item.id) === String(id) && belongsToCurrentShop(item)
-    );
-
-    if (!product) {
-        showToast("Product nahi mila.");
-        renderProducts();
-        return;
-    }
-
-    const confirmed = confirm(
-        'Kya aap "' + (product.name || "this product") + '" ko delete karna chahte hain?'
-    );
-
-    if (!confirmed) return;
-
-    const updatedProducts = latestProducts.filter(item =>
-        !(String(item.id) === String(id) && belongsToCurrentShop(item))
-    );
-
-    if (!saveProducts(updatedProducts)) return;
-
-    products = updatedProducts;
-
-    if (String(editingProductId) === String(id)) {
-        resetProductForm(false);
-    }
-
+  const latest = readProducts();
+  const product = latest.find(item =>
+    String(item.id) === String(id) && belongsToCurrentShop(item)
+  );
+  if (!product) {
+    showToast("Product nahi mila.");
     renderProducts();
-    showToast("Product delete ho gaya.");
+    return;
+  }
+
+  if (!confirm('Kya "' + (product.name || "product") + '" delete karna hai?')) return;
+
+  const updated = latest.filter(item =>
+    !(String(item.id) === String(id) && belongsToCurrentShop(item))
+  );
+  if (!saveProducts(updated)) return;
+
+  products = updated;
+  if (String(editingProductId) === String(id)) resetProductForm(false);
+  renderProducts();
+  showToast("Product delete ho gaya.");
 }
 
 $("searchProducts").addEventListener("input", renderProducts);
 $("filterCategory").addEventListener("change", renderProducts);
 
-// Same browser tab session restore.
 try {
-    const savedShop = JSON.parse(sessionStorage.getItem(SESSION_KEY) || "null");
-    if (savedShop && savedShop.name && savedShop.id) {
-        startSession(savedShop);
-    }
+  const savedShop = JSON.parse(sessionStorage.getItem(SESSION_KEY) || "null");
+  if (savedShop && savedShop.name && savedShop.id) startSession(savedShop);
 } catch (error) {
-    sessionStorage.removeItem(SESSION_KEY);
+  sessionStorage.removeItem(SESSION_KEY);
 }
 </script>
-
 </body>
 </html>
