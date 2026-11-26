@@ -9,7 +9,13 @@
     </url>
 
     <url>
-        <loc>https://surajithaldar380mis.github.io/FreshBasket/customer.html</loc>
+        <loc>https://surajithaldar380mis.github.io/FreshBasket/1.%20customer.html</loc>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>
+
+    <url>
+        <loc>https://surajithaldar380mis.github.io/FreshBasket/shop.html</loc>
         <changefreq>weekly</changefreq>
         <priority>0.8</priority>
     </url>
